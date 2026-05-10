@@ -26,6 +26,8 @@ body,
 body {
   min-width: 320px;
   min-height: 100svh;
+  max-width: 100%;
+  overscroll-behavior: none;
   overflow-x: hidden;
   background:
     radial-gradient(circle at 17% 12%, rgba(250, 204, 21, 0.34), transparent 27%),
@@ -265,6 +267,7 @@ button:focus-visible,
   gap: 10px;
   padding: 10px;
   padding-bottom: max(10px, env(safe-area-inset-bottom));
+  overflow: hidden;
 }
 
 .game-hud {
@@ -351,8 +354,8 @@ button:focus-visible,
 
 .game-area {
   position: relative;
-  width: min(100%, 480px, calc((100svh - 214px) * 9 / 16));
-  min-width: min(100%, 248px);
+  width: min(100%, 480px, calc((100svh - 196px) * 9 / 16));
+  min-width: min(100%, 230px);
   aspect-ratio: 9 / 16;
   overflow: hidden;
   border: 3px solid #172033;
@@ -1848,8 +1851,8 @@ button:focus-visible,
   }
 
   .game-area {
-    width: min(100%, 480px, calc((100svh - 190px) * 9 / 16));
-    min-width: min(100%, 238px);
+    width: min(100%, 480px, calc((100svh - 174px) * 9 / 16));
+    min-width: min(100%, 220px);
   }
 
   .target-visual {
@@ -1864,6 +1867,20 @@ button:focus-visible,
 
   .target-label {
     font-size: 0.64rem;
+  }
+}
+
+@media (max-width: 559px) {
+  .game-hud {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hud-item--mode {
+    display: none;
+  }
+
+  .game-area {
+    width: min(100%, 480px, calc((100svh - 176px) * 9 / 16));
   }
 }
 
@@ -1915,7 +1932,43 @@ button:focus-visible,
   }
 
   .game-area {
-    width: min(100%, 480px, calc((100svh - 158px) * 9 / 16));
+    width: min(100%, 480px, calc((100svh - 138px) * 9 / 16));
+    min-width: min(100%, 204px);
     box-shadow: 0 7px 0 rgba(23, 32, 51, 0.16);
+  }
+}
+
+@media (max-height: 620px) and (max-width: 420px) {
+  .game-screen {
+    gap: 4px;
+    padding-top: 5px;
+    padding-bottom: max(5px, env(safe-area-inset-bottom));
+  }
+
+  .game-actions {
+    min-height: 30px;
+  }
+
+  .small-button,
+  .sound-toggle--compact,
+  .combo-chip {
+    min-height: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 0.78rem;
+  }
+
+  .level-copy h1 {
+    font-size: 0.94rem;
+  }
+
+  .timer-track {
+    height: 9px;
+  }
+
+  .game-area {
+    width: min(100%, 480px, calc((100svh - 118px) * 9 / 16));
+    min-width: min(100%, 190px);
+    border-width: 2px;
   }
 }
