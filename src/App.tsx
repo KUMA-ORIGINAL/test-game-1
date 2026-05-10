@@ -15,6 +15,8 @@ import { vibrateClick } from "./game/haptics";
 import type { GameLevel, GameMode, GameStatus } from "./game/types";
 
 const RESULT_DELAY_MS = 850;
+const KUMA_EVENT_LEVEL_ID = 10;
+const KUMA_EVENT_DELAY_MS = 2600;
 const MIN_ENDLESS_TIME_MS = 800;
 const ENDLESS_TIME_STEP_MS = 80;
 
@@ -194,6 +196,9 @@ function App() {
     setComboMessage(nextComboMessage);
     setGameStatus("success");
 
+    const successDelayMs =
+      currentLevel.id === KUMA_EVENT_LEVEL_ID ? KUMA_EVENT_DELAY_MS : RESULT_DELAY_MS;
+
     delayRef.current = window.setTimeout(() => {
       if (gameMode === "classic") {
         const isLastLevel = currentLevelIndex >= levels.length - 1;
@@ -209,11 +214,12 @@ function App() {
       }
 
       continueWithLevel(pickRandomLevel(), currentLevelIndex + 1, nextScore + 1, nextScore);
-    }, RESULT_DELAY_MS);
+    }, successDelayMs);
   }, [
     clearDelay,
     combo,
     continueWithLevel,
+    currentLevel.id,
     currentLevelIndex,
     finishGame,
     gameMode,

@@ -18,13 +18,14 @@
 html,
 body,
 #root {
+  width: 100%;
   min-height: 100%;
   margin: 0;
 }
 
 body {
   min-width: 320px;
-  min-height: 100dvh;
+  min-height: 100svh;
   overflow-x: hidden;
   background:
     radial-gradient(circle at 17% 12%, rgba(250, 204, 21, 0.34), transparent 27%),
@@ -57,10 +58,12 @@ button:focus-visible,
 
 .screen {
   width: 100%;
-  min-height: 100dvh;
+  min-height: 100svh;
   display: grid;
   place-items: center;
   padding: 14px;
+  padding-left: max(14px, env(safe-area-inset-left));
+  padding-right: max(14px, env(safe-area-inset-right));
 }
 
 .menu-panel,
@@ -158,6 +161,7 @@ button:focus-visible,
   color: #172033;
   font-size: 1.48rem;
   line-height: 1.05;
+  overflow-wrap: anywhere;
 }
 
 .primary-button,
@@ -257,8 +261,10 @@ button:focus-visible,
 
 .game-screen {
   align-content: start;
+  justify-items: center;
   gap: 10px;
   padding: 10px;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
 }
 
 .game-hud {
@@ -345,8 +351,8 @@ button:focus-visible,
 
 .game-area {
   position: relative;
-  width: min(100%, 480px, calc((100dvh - 220px) * 9 / 16));
-  min-width: min(100%, 270px);
+  width: min(100%, 480px, calc((100svh - 214px) * 9 / 16));
+  min-width: min(100%, 248px);
   aspect-ratio: 9 / 16;
   overflow: hidden;
   border: 3px solid #172033;
@@ -605,6 +611,169 @@ button:focus-visible,
 .pause-panel h2 {
   margin: 0;
   font-size: 2rem;
+}
+
+.kuma-event {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kuma-screamer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.96) 0 15%, transparent 16%),
+    radial-gradient(circle at 45% 36%, #ef4444 0 3%, transparent 4%),
+    radial-gradient(circle at 55% 36%, #ef4444 0 3%, transparent 4%),
+    #050505;
+  color: #ffffff;
+  text-align: center;
+  animation: kumaScreamer 760ms ease-out both;
+}
+
+.kuma-screamer span {
+  display: block;
+  font-size: clamp(7rem, 42vw, 14rem);
+  line-height: 1;
+  filter: drop-shadow(0 0 22px rgba(239, 68, 68, 0.8));
+  animation: kumaJump 180ms steps(2, end) 4;
+}
+
+.kuma-screamer strong {
+  position: absolute;
+  left: 50%;
+  bottom: 14%;
+  translate: -50% 0;
+  font-size: clamp(2.7rem, 16vw, 5.6rem);
+  line-height: 0.9;
+  text-shadow: 0 6px 0 #991b1b;
+}
+
+.kuma-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  animation: kumaConfettiShow 1.75s ease-out 620ms both;
+}
+
+.kuma-confetti i {
+  position: absolute;
+  top: -10%;
+  left: var(--x);
+  width: 12px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--c);
+  transform: rotate(var(--r));
+  animation: kumaConfettiFall 1.45s ease-in var(--d) infinite;
+}
+
+.kuma-confetti i:nth-child(1) {
+  --x: 8%;
+  --c: #facc15;
+  --r: 12deg;
+  --d: 0s;
+}
+
+.kuma-confetti i:nth-child(2) {
+  --x: 18%;
+  --c: #22c55e;
+  --r: -18deg;
+  --d: 0.08s;
+}
+
+.kuma-confetti i:nth-child(3) {
+  --x: 29%;
+  --c: #fb7185;
+  --r: 28deg;
+  --d: 0.18s;
+}
+
+.kuma-confetti i:nth-child(4) {
+  --x: 39%;
+  --c: #38bdf8;
+  --r: -8deg;
+  --d: 0.04s;
+}
+
+.kuma-confetti i:nth-child(5) {
+  --x: 48%;
+  --c: #a78bfa;
+  --r: 40deg;
+  --d: 0.14s;
+}
+
+.kuma-confetti i:nth-child(6) {
+  --x: 57%;
+  --c: #fb923c;
+  --r: -36deg;
+  --d: 0.24s;
+}
+
+.kuma-confetti i:nth-child(7) {
+  --x: 66%;
+  --c: #14b8a6;
+  --r: 18deg;
+  --d: 0.1s;
+}
+
+.kuma-confetti i:nth-child(8) {
+  --x: 74%;
+  --c: #ef4444;
+  --r: -22deg;
+  --d: 0.2s;
+}
+
+.kuma-confetti i:nth-child(9) {
+  --x: 83%;
+  --c: #84cc16;
+  --r: 30deg;
+  --d: 0.02s;
+}
+
+.kuma-confetti i:nth-child(10) {
+  --x: 91%;
+  --c: #6366f1;
+  --r: -42deg;
+  --d: 0.16s;
+}
+
+.kuma-confetti i:nth-child(11) {
+  --x: 34%;
+  --c: #f472b6;
+  --r: -30deg;
+  --d: 0.28s;
+}
+
+.kuma-confetti i:nth-child(12) {
+  --x: 71%;
+  --c: #eab308;
+  --r: 46deg;
+  --d: 0.32s;
+}
+
+.kuma-name {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  z-index: 3;
+  translate: -50% -50%;
+  color: #ffffff;
+  font-size: clamp(4rem, 25vw, 8.4rem);
+  font-weight: 1000;
+  line-height: 0.9;
+  opacity: 0;
+  text-shadow:
+    0 5px 0 #0f172a,
+    0 12px 26px rgba(15, 23, 42, 0.34);
+  animation: kumaName 1.75s cubic-bezier(0.18, 1.4, 0.32, 1) 720ms both;
 }
 
 .prop-table,
@@ -1544,6 +1713,83 @@ button:focus-visible,
   }
 }
 
+@keyframes kumaScreamer {
+  0% {
+    opacity: 0;
+    transform: scale(0.15) rotate(-12deg);
+  }
+
+  18% {
+    opacity: 1;
+    transform: scale(1.18) rotate(3deg);
+  }
+
+  62% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.26) rotate(2deg);
+  }
+}
+
+@keyframes kumaJump {
+  from {
+    transform: translateX(-7px) scale(1.08);
+  }
+
+  to {
+    transform: translateX(7px) scale(1.2);
+  }
+}
+
+@keyframes kumaConfettiShow {
+  0% {
+    opacity: 0;
+    background: rgba(34, 197, 94, 0);
+  }
+
+  16%,
+  100% {
+    opacity: 1;
+    background: rgba(34, 197, 94, 0.14);
+  }
+}
+
+@keyframes kumaConfettiFall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(var(--r));
+  }
+
+  100% {
+    transform: translate3d(22px, 112vh, 0) rotate(calc(var(--r) + 420deg));
+  }
+}
+
+@keyframes kumaName {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) rotate(-12deg);
+  }
+
+  38% {
+    opacity: 1;
+    transform: scale(1.16) rotate(3deg);
+  }
+
+  70% {
+    opacity: 1;
+    transform: scale(0.98) rotate(-1deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 @media (min-width: 560px) {
   .button-row {
     grid-template-columns: 1fr 1fr;
@@ -1566,7 +1812,9 @@ button:focus-visible,
 
 @media (max-width: 390px) {
   .screen {
-    padding: 9px;
+    padding: 8px;
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
   }
 
   .menu-panel,
@@ -1582,8 +1830,9 @@ button:focus-visible,
   }
 
   .game-screen {
-    gap: 7px;
-    padding: 8px;
+    gap: 6px;
+    padding: 7px;
+    padding-bottom: max(7px, env(safe-area-inset-bottom));
   }
 
   .hud-item {
@@ -1599,8 +1848,8 @@ button:focus-visible,
   }
 
   .game-area {
-    width: min(100%, 480px, calc((100dvh - 205px) * 9 / 16));
-    min-width: min(100%, 250px);
+    width: min(100%, 480px, calc((100svh - 190px) * 9 / 16));
+    min-width: min(100%, 238px);
   }
 
   .target-visual {
@@ -1615,5 +1864,58 @@ button:focus-visible,
 
   .target-label {
     font-size: 0.64rem;
+  }
+}
+
+@media (max-height: 720px) and (max-width: 480px) {
+  .game-screen {
+    gap: 5px;
+  }
+
+  .game-hud {
+    gap: 5px;
+  }
+
+  .hud-item {
+    padding: 5px 4px;
+  }
+
+  .hud-item span {
+    font-size: 0.62rem;
+  }
+
+  .hud-item strong {
+    font-size: 1rem;
+  }
+
+  .hud-item--mode strong {
+    font-size: 0.78rem;
+  }
+
+  .game-actions {
+    gap: 6px;
+  }
+
+  .small-button,
+  .sound-toggle--compact,
+  .combo-chip {
+    min-height: 34px;
+  }
+
+  .level-copy h1 {
+    font-size: 1.02rem;
+  }
+
+  .level-copy p {
+    display: none;
+  }
+
+  .timer-track {
+    height: 11px;
+  }
+
+  .game-area {
+    width: min(100%, 480px, calc((100svh - 158px) * 9 / 16));
+    box-shadow: 0 7px 0 rgba(23, 32, 51, 0.16);
   }
 }

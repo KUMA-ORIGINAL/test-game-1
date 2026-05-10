@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import type { ActiveGameStatus, GameLevel, GameMode, RoundStatus } from "../game/types";
-import { playClickSound, playFailSound, playSuccessSound } from "../game/sound";
+import {
+  playClickSound,
+  playFailSound,
+  playScreamerSound,
+  playSuccessSound,
+} from "../game/sound";
 import { vibrateClick, vibrateFail, vibrateSuccess } from "../game/haptics";
 import { SceneRenderer } from "./SceneRenderer";
 import { SoundToggle } from "./SoundToggle";
 import { TimerBar } from "./TimerBar";
 
 const DEBUG_TARGET = false;
+const KUMA_EVENT_LEVEL_ID = 10;
 
 const MODE_LABELS: Record<GameMode, string> = {
   classic: "Классика",
@@ -67,11 +73,15 @@ export function GameScreen({
 
   const playSuccessFeedback = useCallback(() => {
     if (soundEnabled) {
-      playSuccessSound();
+      if (level.id === KUMA_EVENT_LEVEL_ID) {
+        playScreamerSound();
+      } else {
+        playSuccessSound();
+      }
     }
 
     vibrateSuccess();
-  }, [soundEnabled]);
+  }, [level.id, soundEnabled]);
 
   const playFailFeedback = useCallback(() => {
     if (soundEnabled) {
@@ -231,6 +241,29 @@ export function GameScreen({
             <span>{statusText}</span>
             {status === "success" && <small>Следующая опасность...</small>}
             {comboMessage && <em>{comboMessage}</em>}
+          </div>
+        )}
+        {status === "success" && level.id === KUMA_EVENT_LEVEL_ID && (
+          <div className="kuma-event" aria-hidden="true">
+            <div className="kuma-screamer">
+              <span>🤖</span>
+              <strong>БУ!</strong>
+            </div>
+            <div className="kuma-confetti">
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </div>
+            <div className="kuma-name">КУМА</div>
           </div>
         )}
         {status === "paused" && (

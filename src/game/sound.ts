@@ -74,3 +74,9 @@ export function playFailSound(): void {
   playTone(180, 120, "sawtooth", 0.045);
   playTone(120, 150, "triangle", 0.035, 82);
 }
+
+export function playScreamerSound(): void {
+  playTone(960, 160, "square", 0.15);
+  playTone(1320, 110, "sawtooth", 0.12, 45);
+  playTone(92, 260, "triangle", 0.13, 120);
+}
