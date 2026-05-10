@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GameScreen } from "./components/GameScreen";
 import { HowToPlayScreen } from "./components/HowToPlayScreen";
+import { KumaBackground } from "./components/KumaBackground";
 import { MenuScreen } from "./components/MenuScreen";
 import { ResultScreen } from "./components/ResultScreen";
 import { levels } from "./game/levels";
@@ -243,53 +244,67 @@ function App() {
 
   if (gameStatus === "menu") {
     return (
-      <MenuScreen
-        bestScores={bestScores}
-        soundEnabled={soundEnabled}
-        onStart={startGame}
-        onHowToPlay={showHowToPlay}
-        onToggleSound={toggleSound}
-      />
+      <>
+        <KumaBackground />
+        <MenuScreen
+          bestScores={bestScores}
+          soundEnabled={soundEnabled}
+          onStart={startGame}
+          onHowToPlay={showHowToPlay}
+          onToggleSound={toggleSound}
+        />
+      </>
     );
   }
 
   if (gameStatus === "howToPlay") {
-    return <HowToPlayScreen onBack={returnToMenu} />;
+    return (
+      <>
+        <KumaBackground />
+        <HowToPlayScreen onBack={returnToMenu} />
+      </>
+    );
   }
 
   if (gameStatus === "gameOver") {
     return (
-      <ResultScreen
-        mode={gameMode}
-        score={score}
-        bestScore={bestScores[gameMode]}
-        isNewRecord={isNewRecord}
-        onRestart={restartGame}
-        onMenu={returnToMenu}
-      />
+      <>
+        <KumaBackground />
+        <ResultScreen
+          mode={gameMode}
+          score={score}
+          bestScore={bestScores[gameMode]}
+          isNewRecord={isNewRecord}
+          onRestart={restartGame}
+          onMenu={returnToMenu}
+        />
+      </>
     );
   }
 
   return (
-    <GameScreen
-      level={currentLevel}
-      roundId={roundId}
-      levelNumber={gameMode === "classic" ? currentLevelIndex + 1 : roundNumber}
-      totalLevels={levels.length}
-      score={score}
-      combo={combo}
-      comboMessage={comboMessage}
-      mode={gameMode}
-      status={gameStatus}
-      timeLimitMs={activeTimeLimitMs}
-      soundEnabled={soundEnabled}
-      onSuccess={handleSuccess}
-      onFail={handleFail}
-      onPause={pauseGame}
-      onResume={resumeGame}
-      onMenu={returnToMenu}
-      onToggleSound={toggleSound}
-    />
+    <>
+      <KumaBackground />
+      <GameScreen
+        level={currentLevel}
+        roundId={roundId}
+        levelNumber={gameMode === "classic" ? currentLevelIndex + 1 : roundNumber}
+        totalLevels={levels.length}
+        score={score}
+        combo={combo}
+        comboMessage={comboMessage}
+        mode={gameMode}
+        status={gameStatus}
+        timeLimitMs={activeTimeLimitMs}
+        soundEnabled={soundEnabled}
+        onSuccess={handleSuccess}
+        onFail={handleFail}
+        onPause={pauseGame}
+        onResume={resumeGame}
+        onMenu={returnToMenu}
+        onToggleSound={toggleSound}
+      />
+    </>
   );
 }
 
