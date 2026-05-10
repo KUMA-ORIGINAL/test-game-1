@@ -1,5 +1,23 @@
+import { useState } from "react";
 import type { GameMode } from "../game/types";
 import { SoundToggle } from "./SoundToggle";
+
+type MenuAction = GameMode | "howToPlay";
+
+const PRANK_MESSAGES: Record<MenuAction, string[]> = {
+  classic: [
+    "Классика делает вид, что её нет. Нажми ещё раз, только серьёзно.",
+    "Кнопка проверяет реакцию. Второй тап откроет опасности.",
+  ],
+  endless: [
+    "Бесконечный режим испугался своей бесконечности. Тапни ещё раз.",
+    "Сначала нужно морально подготовить кнопку. Готово, жми снова.",
+  ],
+  howToPlay: [
+    "Инструкция спряталась за диван. Ещё один клик — и она выйдет.",
+    "Кнопка требует пароль: КУМА. Ладно, просто нажми ещё раз.",
+  ],
+};
 
 type MenuScreenProps = {
   bestScores: Record<GameMode, number>;
@@ -16,6 +34,33 @@ export function MenuScreen({
   onHowToPlay,
   onToggleSound,
 }: MenuScreenProps) {
+  const [armedActions, setArmedActions] = useState<Record<MenuAction, boolean>>({
+    classic: false,
+    endless: false,
+    howToPlay: false,
+  });
+  const [prankMessage, setPrankMessage] = useState("");
+  const [prankTarget, setPrankTarget] = useState<MenuAction | null>(null);
+
+  const handlePrankClick = (action: MenuAction, onReady: () => void) => {
+    if (!armedActions[action]) {
+      const messages = PRANK_MESSAGES[action];
+      const message = messages[Math.floor(Math.random() * messages.length)] ?? messages[0];
+
+      setArmedActions((currentActions) => ({
+        ...currentActions,
+        [action]: true,
+      }));
+      setPrankMessage(message);
+      setPrankTarget(action);
+      return;
+    }
+
+    setPrankMessage("");
+    setPrankTarget(null);
+    onReady();
+  };
+
   return (
     <main className="screen menu-screen">
       <section className="menu-panel">
@@ -40,22 +85,38 @@ export function MenuScreen({
 
         <div className="mode-grid">
           <button
-            className="primary-button"
+            className={`primary-button prank-button${
+              prankTarget === "classic" ? " prank-button--tease" : ""
+            }`}
             type="button"
-            onClick={() => onStart("classic")}
+            onClick={() => handlePrankClick("classic", () => onStart("classic"))}
           >
             Классика
           </button>
           <button
-            className="primary-button primary-button--hot"
+            className={`primary-button primary-button--hot prank-button${
+              prankTarget === "endless" ? " prank-button--tease" : ""
+            }`}
             type="button"
-            onClick={() => onStart("endless")}
+            onClick={() => handlePrankClick("endless", () => onStart("endless"))}
           >
             Бесконечный режим
           </button>
         </div>
 
-        <button className="secondary-button" type="button" onClick={onHowToPlay}>
+        {prankMessage && (
+          <div className="prank-message" role="status" aria-live="polite">
+            {prankMessage}
+          </div>
+        )}
+
+        <button
+          className={`secondary-button prank-button${
+            prankTarget === "howToPlay" ? " prank-button--tease" : ""
+          }`}
+          type="button"
+          onClick={() => handlePrankClick("howToPlay", onHowToPlay)}
+        >
           Как играть
         </button>
       </section>
